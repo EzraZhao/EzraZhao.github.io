@@ -6,12 +6,12 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="//litten.me">
-  <title>Ezra Zhao</title>
+  <title>Tag: android, 第一行代码, bug | Ezra Zhao</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="95后小菜鸟一枚。。。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ezra Zhao">
-<meta property="og:url" content="//litten.me/index.html">
+<meta property="og:url" content="//litten.me/tags/android-第一行代码-bug/index.html">
 <meta property="og:site_name" content="Ezra Zhao">
 <meta property="og:description" content="95后小菜鸟一枚。。。">
 <meta name="twitter:card" content="summary">
@@ -154,51 +154,34 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-酷欧天气bug" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
+  
     
-      <header class="article-header">
-        
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2017" class="archive-year">2017</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2017/03/09/酷欧天气bug/" class="archive-article-date">
+  	<time datetime="2017-03-09T07:43:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-09</time>
+</a>
+        </div>
+    	 
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/09/酷欧天气bug/">酷欧天气bug</a>
+      <a class="archive-article-title" href="/2017/03/09/酷欧天气bug/">酷欧天气bug</a>
     </h1>
   
 
-        <a href="/2017/03/09/酷欧天气bug/" class="archive-article-date">
-  	<time datetime="2017-03-09T07:43:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-09</time>
-</a>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://github.com/EzraZhao/Cool-Weather" target="_blank" rel="external">源码地址</a></p>
-<p>本文出自EzraZhao，转载请注明出处。</p>
-<p>本篇文章只适合刚入门菜鸟，大神级请绕道，谢谢。</p>
-<p>废话不多说，相信大家有不少人都在学习或者学过郭霖郭大神的第一行代码，本人在学习第二版时，在制作酷欧天气中发现一个小bug,不知道大家有没有发现。</p>
-<p>在你启动郭神的应用后，现在假如已经加载了一个城市的天气信息，然后你进行切换城市操作，然后进行刷新操作，哎，你会发现城市竟然又切回了启动时的城市天气，而且不管你切换几次，只要一刷新，就会切回原来的。</p>
-<p>这个小bug在我做完随意切换城市时发现的。然后进行一番调试，发现问题的根源在于WeatherActivity的onCreate()方法</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">final</span> <span class="built_in">String</span> weatherId;</div><div class="line"></div><div class="line"><span class="keyword">if</span> (weatherString != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="comment">//有缓存时直接解析天气数据</span></div><div class="line">            Weather weather = Utility.handleWeatherResponse(weatherString);</div><div class="line">            weatherId = weather.basic.weatherId;</div><div class="line">            showWeatherInfo(weather);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="comment">//无缓存时去服务器查询天气</span></div><div class="line">            weatherId = getIntent().getStringExtra(<span class="string">"weather_id"</span>);</div><div class="line">            <span class="comment">//请求数据时先将ScrollView隐藏，否则空界面看上去会比较奇怪</span></div><div class="line">            weatherLayout.setVisibility(View.INVISIBLE);</div><div class="line">            requestWeather(weatherId);</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
-<p>不知道你发现问题没，如果没有发现，好，让我们一起来回想一下Activity的生命周期，还记得onCreate()方法只会在Activity创建时执行一次吗？明白没，对了，就是这个问题，咱们的weatherId只会在WeatherActivity创建时被加载一次，也就是说当你启动应用后，咱们的应用会默认加载一次天气，如果你是第一次安装，那么就会从服务器加载，没问题，如果你是已经打开过，会从缓存加载，没问题。然后你切换一次城市，哎，问题来了，由于咱们的WeatherActivity创建完了，然后weatherId就不会再更改了，所以咱们的</p>
-<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">swipeRefresh.setOnRefreshListener(<span class="keyword">new</span> SwipeRefreshLayout.OnRefreshListener() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onRefresh</span><span class="params">()</span> </span>&#123;</div><div class="line">                requestWeather(weatherId);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div></pre></td></tr></table></figure>
-<p>这个方法每次传入的id都是在Activity创建时的同一个，一刷新当然会改回去咯。</p>
-<p>然而这个小bug怎么解决呢？so easy,weatherId不是不变么，来，咱们来解决一下：</p>
-<p>先提供一种简单的方案：<br>哦，requestWeather(String weatherId)这个这个里面的id每次都是新的，那咱们就把weatherId从onCreate()方法中拿出去，变成全局变量，然后在requestWeather(String weatherId)这个方法中更新一下，<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">void</span> requestWeather(<span class="keyword">String</span> weatherId) &#123;</div><div class="line">        <span class="keyword">String</span> weatherUrl = <span class="string">"http://guolin.tech/api/weather?cityid="</span></div><div class="line">                + weatherId + <span class="string">"&amp;key="</span> + API_KEY;</div><div class="line">        <span class="comment">//使weatherId成为全局变量，在每一次请求时都更新当前id</span></div><div class="line">        <span class="keyword">this</span>.weatherId = weatherId;</div><div class="line">        ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>就是这么简单，每次更新一下，解决！</p>
-<p>咱们再来看一种不把weatherId变成全局变量的方法：</p>
-<p>这个方法借助SharedPreferences将weatherId在选择城市后进行本地存储一下，来，我们改一下ChooseAreaFragment这个类中的代码：<br><figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">void</span> onActivityCreated(@Nullable Bundle savedInstanceState) &#123;</div><div class="line">        super.onActivityCreated(savedInstanceState);</div><div class="line">        listView.setOnItemClickListener(<span class="keyword">new</span> AdapterView.OnItemClickListener() &#123;</div><div class="line">            @Override</div><div class="line">            <span class="keyword">public</span> <span class="keyword">void</span> onItemClick(AdapterView&lt;?&gt; parent, View view, <span class="keyword">int</span> <span class="built_in">position</span>, <span class="keyword">long</span> id) &#123;</div><div class="line">                <span class="built_in">if</span> (currentLevel == LEVEL_PROVINCE) &#123;</div><div class="line">                    selectedProvince = provinceList.<span class="built_in">get</span>(<span class="built_in">position</span>);</div><div class="line">                    queryCities();</div><div class="line">                &#125; <span class="built_in">else</span> <span class="built_in">if</span> (currentLevel == LEVEL_CITY) &#123;</div><div class="line">                    selectedCity = cityList.<span class="built_in">get</span>(<span class="built_in">position</span>);</div><div class="line">                    queryCounties();</div><div class="line">                &#125; <span class="built_in">else</span> <span class="built_in">if</span> (currentLevel == LEVEL_COUNTY) &#123;</div><div class="line">                    <span class="keyword">String</span> weatherId = countyList.<span class="built_in">get</span>(<span class="built_in">position</span>).getWeatherId();</div><div class="line">                    <span class="built_in">if</span> (getActivity() instanceof MainActivity) &#123;</div><div class="line">                        Intent intent = <span class="keyword">new</span> Intent(getActivity(), WeatherActivity.<span class="keyword">class</span>);</div><div class="line">                        intent.putExtra(<span class="string">"weather_id"</span>, weatherId);</div><div class="line">                        startActivity(intent);</div><div class="line">                        getActivity().finish();</div><div class="line">                    &#125; <span class="built_in">else</span> <span class="built_in">if</span> (getActivity() instanceof WeatherActivity) &#123;</div><div class="line">                        WeatherActivity activity = (WeatherActivity) getActivity();</div><div class="line">                        </div><div class="line">                        <span class="comment">//对，改的就是这！</span></div><div class="line">                        SharedPreferences.Editor editor =</div><div class="line">                                    PreferenceManager.getDefaultSharedPreferences(WeatherActivity.<span class="keyword">this</span>)</div><div class="line">                                            .edit();</div><div class="line">                            editor.putString(<span class="string">"weather_id"</span>, weatherId);</div><div class="line">                            editor.apply();</div><div class="line">                            </div><div class="line">                        activity.drawerLayout.closeDrawers();</div><div class="line">                        activity.swipeRefresh.setRefreshing(true);</div><div class="line">                        activity.requestWeather(weatherId);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;);</div></pre></td></tr></table></figure></p>
-<p>然而这样完了吗？当然并没有，我们只是存储了，在WeatherActivity中还是只读取了一次啊，下面我们再来改一下刷新时监听器代码：</p>
-<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">swipeRefresh.setOnRefreshListener(new </span><span class="keyword">SwipeRefreshLayout.OnRefreshListener() </span>&#123;</div><div class="line">            @Override</div><div class="line">            public void onRefresh() &#123;</div><div class="line">                <span class="keyword">SharedPreferences </span><span class="keyword">prefs </span>= <span class="keyword">PreferenceManager</span></div><div class="line">                        .getDefaultSharedPreferences(WeatherActivity.this)<span class="comment">;</span></div><div class="line">                String temp = <span class="keyword">prefs.getString("weather_id", </span>weatherId)<span class="comment">;</span></div><div class="line">                requestWeather(temp)<span class="comment">;</span></div><div class="line">            &#125;</div><div class="line">        &#125;)<span class="comment">;</span></div></pre></td></tr></table></figure>
-<p>是不是也是so easy，<br>我们跑一下吧~<br>(<em>@ο@</em>) 哇哈哈哈～改完bug就是爽！</p>
-<p>欢迎交流。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
 		<ul class="article-tag-list">
@@ -210,86 +193,19 @@
 		</ul>
 	</div>
 
-      
+          
 
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/03/09/酷欧天气bug/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-
-
-
-
-
-
-
   
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
+  
+    </div></section>
+  
+
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/09/hello-world/">Hello World</a>
-    </h1>
-  
-
-        <a href="/2017/03/09/hello-world/" class="archive-article-date">
-  	<time datetime="2017-03-09T01:29:01.817Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-09</time>
-</a>
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/03/09/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-  
 
 
           </div>
@@ -311,10 +227,10 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
+		isHome: false,
 		isPost: false,
 		isArchive: false,
-		isTag: false,
+		isTag: true,
 		isCategory: false,
 		open_in_new: false,
 		root: "/",
