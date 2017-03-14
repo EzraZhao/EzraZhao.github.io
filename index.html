@@ -148,6 +148,68 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Python解决杨辉三角问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/14/Python解决杨辉三角问题/">Python解决杨辉三角问题</a>
+    </h1>
+  
+
+        <a href="/2017/03/14/Python解决杨辉三角问题/" class="archive-article-date">
+  	<time datetime="2017-03-14T13:48:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-14</time>
+</a>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#!/usr/bin/env python3</p>
+<h1 id="coding-utf-8"><a href="#coding-utf-8" class="headerlink" title="-- coding: utf-8 --"></a>-<em>- coding: utf-8 -</em>-</h1><p>def triangles():<br>    L = [1]<br>    while True:<br>        yield L<br>        L.append(0)#充分发挥了python中L[-1] = L[len(L) - 1]<br>        L = [L[i - 1] + L[i] for i in range(len(L))]</p>
+<p>n = 0<br>for t in triangles():<br>    print(t)<br>    n = n + 1<br>    if n == 10:<br>        break</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list">
+			 
+        <li class="article-tag-list-item">
+        	<a href="javascript:void(0)" class="article-tag-list-link color3">-python</a>
+        </li>
+      
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/03/14/Python解决杨辉三角问题/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-酷欧天气bug" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -385,6 +447,10 @@
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="color3">-python</a>
+              </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="color3">android</a>
