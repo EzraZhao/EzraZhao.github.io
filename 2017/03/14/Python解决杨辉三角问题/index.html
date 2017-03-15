@@ -8,19 +8,25 @@
   <link rel="dns-prefetch" href="//litten.me">
   <title>Python解决杨辉三角问题 | Ezra Zhao</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="#!/usr/bin/env python3
--- coding: utf-8 --def triangles():    L = [1]    while True:        yield L        L.append(0)#充分发挥了python中L[-1] = L[len(L) - 1]        L = [L[i - 1] + L[i] for i in range(len(">
+  <meta name="description" content="最近在学习Python，在看廖雪峰老师的博客的时候,其中一个练习题为杨辉三角问题，发现了一种很优雅的解法，现记录如下：
+# 题目如下：
+123456789101112131415#!/usr/bin/env python3# -*- coding: utf-8 -*-def triangles():	L = [1]	while True:		yield L		L.append(0)		L = [L">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python解决杨辉三角问题">
 <meta property="og:url" content="//litten.me/2017/03/14/Python解决杨辉三角问题/index.html">
 <meta property="og:site_name" content="Ezra Zhao">
-<meta property="og:description" content="#!/usr/bin/env python3
--- coding: utf-8 --def triangles():    L = [1]    while True:        yield L        L.append(0)#充分发挥了python中L[-1] = L[len(L) - 1]        L = [L[i - 1] + L[i] for i in range(len(">
-<meta property="og:updated_time" content="2017-03-14T14:01:42.387Z">
+<meta property="og:description" content="最近在学习Python，在看廖雪峰老师的博客的时候,其中一个练习题为杨辉三角问题，发现了一种很优雅的解法，现记录如下：
+# 题目如下：
+123456789101112131415#!/usr/bin/env python3# -*- coding: utf-8 -*-def triangles():	L = [1]	while True:		yield L		L.append(0)		L = [L">
+<meta property="og:image" content="//litten.me/photo/yanghui.png">
+<meta property="og:image" content="//litten.me/photo/yanghuiout.png">
+<meta property="og:updated_time" content="2017-03-15T01:14:17.164Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python解决杨辉三角问题">
-<meta name="twitter:description" content="#!/usr/bin/env python3
--- coding: utf-8 --def triangles():    L = [1]    while True:        yield L        L.append(0)#充分发挥了python中L[-1] = L[len(L) - 1]        L = [L[i - 1] + L[i] for i in range(len(">
+<meta name="twitter:description" content="最近在学习Python，在看廖雪峰老师的博客的时候,其中一个练习题为杨辉三角问题，发现了一种很优雅的解法，现记录如下：
+# 题目如下：
+123456789101112131415#!/usr/bin/env python3# -*- coding: utf-8 -*-def triangles():	L = [1]	while True:		yield L		L.append(0)		L = [L">
+<meta name="twitter:image" content="//litten.me/photo/yanghui.png">
   
     <link rel="alternative" href="/atom.xml" title="Ezra Zhao" type="application/atom+xml">
   
@@ -168,9 +174,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>#!/usr/bin/env python3</p>
-<h1 id="coding-utf-8"><a href="#coding-utf-8" class="headerlink" title="-- coding: utf-8 --"></a>-<em>- coding: utf-8 -</em>-</h1><p>def triangles():<br>    L = [1]<br>    while True:<br>        yield L<br>        L.append(0)#充分发挥了python中L[-1] = L[len(L) - 1]<br>        L = [L[i - 1] + L[i] for i in range(len(L))]</p>
-<p>n = 0<br>for t in triangles():<br>    print(t)<br>    n = n + 1<br>    if n == 10:<br>        break</p>
+        <p>最近在学习Python，在看<a href="http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000" target="_blank" rel="external">廖雪峰</a>老师的博客的时候,其中一个练习题为杨辉三角问题，发现了一种很优雅的解法，现记录如下：</p>
+<h6 id="题目如下："><a href="#题目如下：" class="headerlink" title="# 题目如下："></a># 题目如下：</h6><p><img src="/photo/yanghui.png" alt="image"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python3</span></div><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">triangles</span><span class="params">()</span>:</span></div><div class="line">	L = [<span class="number">1</span>]</div><div class="line">	<span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">		<span class="keyword">yield</span> L</div><div class="line">		L.append(<span class="number">0</span>)</div><div class="line">		L = [L[i - <span class="number">1</span>] + L[i] <span class="keyword">for</span> i <span class="keyword">in</span> range(len(L))]</div><div class="line"></div><div class="line">n = <span class="number">0</span></div><div class="line"><span class="keyword">for</span> t <span class="keyword">in</span> triangles():</div><div class="line">    print(t)</div><div class="line">    n = n + <span class="number">1</span></div><div class="line">    <span class="keyword">if</span> n == <span class="number">10</span>:</div><div class="line">        <span class="keyword">break</span></div></pre></td></tr></table></figure>
+<p>在这个解决办法中，充分利用了python语法中L[-1] == L[len(L) - 1]这点(L[-1]表示该List中最后一个元素)，为简单，只输出前10行。输出为下：<br><img src="/photo/yanghuiout.png" alt="image"></p>
+<p>特此记录。</p>
 
       
 
